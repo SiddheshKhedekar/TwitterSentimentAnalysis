@@ -1,10 +1,10 @@
-# Machine Learning Nanodegree Capstone Proposal
+# Machine Learning Engineer Nanodegree Capstone Proposal
 
 ## Topic: Using Twitter Data for NLP and Sentiment Analysis
 
 #### Siddhesh Khedekar
 
-#### October 20, 2018
+#### October 29, 2018
 
 ---
 
@@ -50,7 +50,7 @@ In order to train my twitter sentiment classifier, I needed a dataset which meet
 - preferably tweets text data with annotated sentiment label
 - with at least 2 sentiment classes: negative and positive
 
-While googling to find a good data source, I learned about renowned NLP competition called [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140) on Kaggle. The dataset for training the model is from "Sentiment140", a dataset originated from Stanford University. More info on the dataset can be found [here](http://help.sentiment140.com/for-students/). The dataset can be downloaded [here](http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip). First look at the description of the dataset from the link, the information on each field can be found.
+While googling to find a good data source, I learned about renowned NLP competition called [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140) on Kaggle. The dataset for training the model is from "Sentiment140", a dataset originated from Stanford University. More info on the dataset can be found on its official [website](http://help.sentiment140.com/for-students/). The dataset can be downloaded from the provided [link](http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip). First look at the description of the dataset, the following information on each field can be found.
 
 ![Data](./img/data.png "Data")
 
@@ -60,7 +60,7 @@ While googling to find a good data source, I learned about renowned NLP competit
 4. query_string (qwe). NO_QUERY is set as value if there is no query
 5. user that tweeted (dcrules)
 6. text of the tweet (Marvel is cool)
-
+    
 Here I will first need to be dropping some of the columns that I don't need for the specific purpose of sentiment analysis.
 
 ![Data New](./img/datanew1.png "Data New")![Data New](./img/datanew2.png "Data New")
@@ -71,9 +71,12 @@ Here I will first need to be dropping some of the columns that I don't need for 
 
 #### The solution I would like to propose for the purpose of sentiment analysis is given below.
 
-Firstly even before Data Exploration, there will be a lot of cleaning work to be done on the data set. I will have to clean up all the HTML elements, byte order marks, URL address, Twitter mentions, numbers, and special characters. I will convert all text to lower case, handle negation along with tokenizing and joining. Then comes the Feature engineering part where I will need to experiment with the maximum number of features to see how the results differ. I will also have to experiment with different n-grams (unigram, unigram+bigram, bigram only, etc.),  test both with and without stemming or lemmatization, test different vectorizing models (count vectorizer, tfidf vectorizer, word2vec/doc2vec), test with and without lexicon use before creating my model.
+Firstly even before Data Exploration, there will be a lot of cleaning work to be done on the data set. I will have to clean up all the HTML elements, byte order marks, URL address, Twitter mentions, numbers, and special characters. I will convert all text to lower case, handle negation along with tokenizing and joining. 
 
-I will have to try different models with the above features namely Naive Bayes, Random Forest, Logistic Regression, etc. Then I need to create my own Neural Network or Convolutional Neural Network with the same features. Also, I need to compare their performance to the benchmark as well as each other. The risk I face here is relying on training data's vocabularies, if the training data is not big enough, it has a risk of performing not very well with the validation and test data. I will be overcoming this by splitting my data in the ratio 98/1/1, 98% of data as the training set, and 1% for the dev set, and the final 1% for the test set. This way there will be more than enough values to refine the parameters and evaluate the model.
+Then comes the Feature engineering part where I will need to experiment with the maximum number of features to see how the results differ. I will also have to experiment with different n-grams (unigram, unigram+bigram, bigram only, etc.), test both with and without stemming or lemmatization, test different vectorizing models (count vectorizer, tfidf vectorizer, word2vec/doc2vec), test with and without lexicon use before creating my model. I will have to try to understand different models namely Naive Bayes, Random Forest, Logistic Regression, etc along with the above features. Then I need to create my own model of Convolutional Neural Network with the same features. Also, I need to compare their performance to the benchmark as well as each other. 
+
+For the purpose of implementing the dataset is a very huge one to be training and for the purpose of being able to go through the training of the model on my system I will be forced to be using only a small portion of the original dataset. The risk I face here is relying on training data's vocabularies, if the training data is not big enough, it has a risk of performing not very well with the validation and test data. I will be overcoming this by splitting my data in some ratio, the majority of data will be used as the training set, and the minority equally divided for the validation and the test set. This way there will be more than enough values to refine the parameters and evaluate the model.
+
 
 ---
 
@@ -102,11 +105,11 @@ I will be splitting the dataset into training, validation and testing set. The m
 * Step 0: Import Datasets and Data Preparation
 * Step 1: Data Cleaning and Saving Cleaned Data as CSV
 * Step 2: Explanatory Data Analysis and Visualisation of Zipf’s Law
-* Step 3: Feature Investigation and Extraction
-* Step 4: Machine Learning Model Comparison and Selection
-* Step 5: Creating a CNN for Sentiment Analysis
-* Step 6: Training Model and measuring Validation accuracy
-* Step 7: Testing Model and getting the final result
+* Step 3: Data Split and Benchmark Selection
+* Step 4: Feature Investigation and Extraction
+* Step 5: Model Comparison and Creating a CNN
+* Step 6: Training Model and Measuring Validation Accuracy
+* Step 7: Testing Model and Getting the Final Result
 
 ---
 
@@ -114,7 +117,7 @@ I will be splitting the dataset into training, validation and testing set. The m
 
 #### The conclusion of the project and the results are the following.
 
-I am successfully able to create a sentiment classifier using a labeled twitter dataset. The CNN Classifier I implement will be able to meet a certain accuracy level of approximately higher than 80%.
+I am successfully able to create a sentiment classifier using a labeled twitter dataset. The CNN Classifier I implement will be able to meet a certain accuracy level of approximately higher than the benchmarks I have used. 
 
 ---
 
@@ -129,19 +132,21 @@ I am successfully able to create a sentiment classifier using a labeled twitter 
 [3] - [Mullen Sentiment Course Slides](https://lct-master.org/files/MullenSentimentCourseSlides.pdf)
 
 [4] - [Stanford Sentiment Slides](https://web.stanford.edu/class/cs124/lec/sentiment.pdf)
-
+ 
 [5] - [Sentiment Analysis and Opinion Mining](https://www.cs.uic.edu/~liub/FBS/SentimentAnalysis-and-OpinionMining.pdf)
-
+  
 [6] - [Sentiment Analysis Methodology of Twitter Data ](https://ijoer.com/Paper-January-2016/IJOER-JAN-2016-22.pdf)
-
+   
 [7] - [Pak, Alexander, and Patrick Paroubek. "Twitter as a Corpus for Sentiment Analysis and Opinion Mining." Vol. 10. 2010.](https://pdfs.semanticscholar.org/6b7f/c158541d5a7be2b2465f7d8a42afa97d7ae9.pdf?_ga=2.192887850.1696297172.1543890274-846566920.1543890274)
 
 [8] - [Build a Sentiment Analysis Tool for Twitter with this Simple Python Script - AYLIEN](http://blog.aylien.com/build-a-sentiment-analysis-tool-for-twitter-with-this-simple-python-script/)
-
+  
 [9] - [Text Classification & Sentiment Analysis tutorial / blog - Data Science Central](https://www.datasciencecentral.com/profiles/blogs/text-classification-sentiment-analysis-tutorial-blog)
-
+   
 [10] - [Sentiment Analysis on News Articles using Python for traders](https://www.quantinsti.com/blog/sentiment-analysis-news-python)
 
 [11] - [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140)
+
+[12] - [Sentiment Analysis Wikipedia](https://en.wikipedia.org/wiki/Sentiment_analysis)
 
 ---
