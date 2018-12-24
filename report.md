@@ -49,6 +49,20 @@ In this real-world setting, I pieced together a series of models to perform diff
 * Step 6: Training Model and Measuring Validation Accuracy
 * Step 7: Testing Model and Getting the Final Result
 
+#### Dataset
+
+For the twitter sentiment analysis model, I have chosen a dataset of tweets labeled either positive or negative. The dataset for training the model is from "Sentiment140", a dataset originated from Stanford University. More info on the dataset can be found on its official [website](http://help.sentiment140.com/for-students/).
+
+The dataset can be downloaded from the provided [link](http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip). First look at the description of the dataset, the following information on each field can be found.
+
+1. sentiment of the tweet (0 = negative, 4 = positive)
+2. id of the tweet (3223)
+3. date of the tweet (Sun Mar 12 13:38:45 UTC 2006)
+4. query_string (qwe). NO_QUERY is set as value if there is no query
+5. user that tweeted (dcrules)
+6. text of the tweet (Marvel is cool)
+
+![Data](./img/data.png "Data")
 
 ### Metrics
 
@@ -102,21 +116,6 @@ In order to train my twitter sentiment classifier, I needed a dataset which meet
 While googling to find a good data source, I learned about renowned NLP competition called [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140) on Kaggle. 
 
 ### Data Exploration
-
-#### Import Datasets
-
-For the twitter sentiment analysis model, I have chosen a dataset of tweets labeled either positive or negative. The dataset for training the model is from "Sentiment140", a dataset originated from Stanford University. More info on the dataset can be found on its official [website](http://help.sentiment140.com/for-students/).
-
-The dataset can be downloaded from the provided [link](http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip). First look at the description of the dataset, the following information on each field can be found.
-
-1. sentiment of the tweet (0 = negative, 4 = positive)
-2. id of the tweet (3223)
-3. date of the tweet (Sun Mar 12 13:38:45 UTC 2006)
-4. query_string (qwe). NO_QUERY is set as value if there is no query
-5. user that tweeted (dcrules)
-6. text of the tweet (Marvel is cool)
-
-![Data](./img/data.png "Data")
 
 #### Data Preparation
 
@@ -368,8 +367,6 @@ So far I have only used Sequential model API of Keras, and this worked fine with
 
 Keras functional API can handle multi-input, multi-output, shared layers, shared input, etc. It is not impossible to define these types of models with Sequential API, but when you want to save the trained model, functional API enables you to simply save the model and load, but with sequential API it is difficult.
 
-![model](./img/model.PNG)
-
 ---
 
 ## IV. Results
@@ -378,11 +375,13 @@ Keras functional API can handle multi-input, multi-output, shared layers, shared
 
 ### Model Evaluation and Validation
 
-I use the model I defined on the training data and I save the weights every time they improve.
+![model](./img/model.PNG)
+
+I use the model I defined on the training data and I save the weights every time they improve. At every step I can clearly notice that the model has outperformed the benchmarks by a fair margin which makes it quite trustworthy. I ensured the robustness of the model by padding the input data for uniformity and normalization. The model on an overall went through many incremental changes in which I tried different input padding size and embedding with various feature combinations. In the end I included the model that evaluated the best results.
 
 ![train](./img/train.PNG)
 
-I load the best weights the model created from the training process and test it on the validation data. I evaluate and summerize the loss and accuracy
+I load the best weights the model created from the training process and test it on the validation data. I evaluate and summerize the loss and accuracy. The training process was a bit tough one in which I had to finally cut down the size of the train data. But in the end I managed to get the results I expected. The model is robust and trustworthy because of it gave approximately same results on other portions of the initial dataset.
 
 ### Justification
 
@@ -390,7 +389,7 @@ I load the best weights the model created from the training process and test it 
 
 ##### Result Summary of Validation
 
-The best validation accuracy is 77.40%, slightly better than all the other ones I tried before. I could even define a deeper structure with more hidden layers, or even make use of the multi-channel approach, or try different pool size to see how the performance differs, but I will stop here for now. The accuracy of my model compared to the benchmark null frequency is increased by 27% and the accuracy of my model compared to the benchmark TextBlob is increased by 14%.
+The best validation accuracy is 77.40%, slightly better than all the other ones I tried before. The accuracy of my model compared to the benchmark null frequency is increased by 27% and the accuracy of my model compared to the benchmark TextBlob is increased by 14%.
 
 ![test](./img/test.PNG)
 
@@ -404,15 +403,17 @@ So far I have tested the model on the validation set to decide the feature extra
 
 ### Free-Form Visualization
 
-I will plot the ROC curve of the model Word2Vec + CNN.
+Receiver Operating Characteristic (ROC) metric is used to evaluate classifier output quality. I will plot the ROC and calculate the Area Under Curve (AUC) of the model Word2Vec + CNN. ROC curves typically feature true positive rate on the Y-axis and false positive rate on the X-axis. This means that the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. This is not very realistic, but it does mean that a larger AUC is usually better.
 
 ![roc](./img/roc.PNG)
 
-The ROC curve covers 84% of the area correctly.
+The “steepness” of ROC curves is also important since it is ideal to maximize the true positive rate while minimizing the false positive rate. The ROC of my model is fairly steep with approximately 75% true positive rate and 25% false positive rate. The AUC is around 84% which is an indication that my model is quite robust and trustworthy.
 
 ### Reflection
 
-I tabulate the results of the accuracy of the data calculated by the model as follows:
+I began my work with loading the data from the sentiment 140 dataset. I cleant and preprocessed the tweets before moving on to the feature extraction process. I saved the clean tweets in a new CSV file I created to be used further in the project. After normalizing the data I did some exploratory analysis using the word cloud and visualization of the data displaying Zipf's Law. I then got the frequency of the individual words using count vectorizer. This too I saved in a new CSV file I created. Before any feature extraction, I had to decide how to split my train, validate and test sets. 
+
+Then I researched various feature extraction methods and implemented the best ones I thought into my project. I saved the extracted feature vectors to be used later. The model took some time to design because I had to try out various permutations until I came upon the one that gave me the most trainable params and best results. After designing came the training of the model. I saved the best weights of this process to be later used on the validation set and finally my test set. I tabulate the results of the accuracy of the data calculated by the model as follows:
 
 | Model | Validation Set Accuracy | Test Set Accuracy | ROC AUC |
 |--|--|--|--|
@@ -420,8 +421,14 @@ I tabulate the results of the accuracy of the data calculated by the model as fo
 | TextBlob | 62.75% | - | - |
 | Word2Vec + CNN | 77.40% | 75.45% | 0.84 |
 
+The entire project was very involving and the parts such as feature investigation required a lot of research which I personally Liked a lot. Reading a lot of posts and books regarding natural language processing helped me in understanding the feature extraction processes. To me, the training of the model was the most tedious task as it consumed a lot of time. Initially, I was trying to utilize the entire dataset but soon I realized the time needed would to immense. I referred a few of my other projects especially the dog breed classifier and decided to reduce my training size to make the project more feasible. 
+
 ### Improvement
 
-There are many possible scopes for optimization in the feature extraction as well as the model. I can extend the training set to cover the entire dataset which I could not given my system was taking a long time to process the data. The Finally the Twitter api could be implemented and the data text twets gathered could be tested upon.
+There are many possible scopes for optimization still in my project. The preprocessing of data can be handled more carefully. There are a lot of feature extraction techniques I could experiment with as well as different combinations of layers and design of the model. I can extend the training set to cover the entire dataset which I could not given my system was taking a long time to process the data. Also, the Twitter API could be implemented and the text tweets gathered could be tested upon.
+
+I could pay attention to non-word "emotional" tokens, e.g., “:(”, “:-)" and ":D" when doing feature extraction or even at the time of data processing an cleaning. It would be a nice improvement if I could recognize emojis. The precision of recognizing emotions can increase and improve the accuracy of the sentiment analysis model. Emojis provide a crucial piece of information and this is essential for companies in order to better understand their customer's feelings. Emoticons are considered to be handy and reliable indicators of sentiment, and hence could be used either to automatically generate a training corpus or to act as evidence feature to enhance sentiment classification. Emoticons have been distinguished in two main categories, i.e. positive and negative. Instances of positive emoticons are :-),  :),  =),  :D, while examples of negative ones are :-(,  :(,  =(,  ;( .
+
+The current model only predicts the sentiment to be positive or negative. It would be an improvement if the neutrality of the tweets could be determined. This further leads to the improvement of breaking down positive and negative sentiments into subcategories such as happy, sad, angry, etc. Another simple feature that might be useful and I could implement is the numerical distance between the numbers of positive and negative opinion phrases in a Tweet. I could even define a deeper structure of the model with more hidden layers, or even make use of the multi-channel approach, or try different pool size to see how the performance differs, but I will stop here for now.
 
 ---

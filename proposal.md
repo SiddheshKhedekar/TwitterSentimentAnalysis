@@ -8,7 +8,7 @@
 
 ---
 
-## 1. Introduction
+### 1. Introduction
 
 #### Below I have explained the projects domain background, in essence, the field of research from where the project is derived.
 
@@ -16,7 +16,7 @@ In today's time, microblogging has become the most widely used communication too
 
 ---
 
-## 2. Problem description
+### 2. Problem description
 
 #### Here I have stated the problem I am investigating and for which I will be defining a solution.
 
@@ -40,7 +40,7 @@ The concern about what individual customers are saying about services and produc
 
 ---
 
-## 3. Datasets used
+### 3. Datasets used
 
 #### I will be using the following datasets and inputs for solving the problem.
 
@@ -67,7 +67,7 @@ Here I will first need to be dropping some of the columns that I don't need for 
 
 ---
 
-## 4. Solution
+### 4. Solution
 
 #### The solution I would like to propose for the purpose of sentiment analysis is given below.
 
@@ -80,7 +80,7 @@ For the purpose of implementing the dataset is a very huge one to be training an
 
 ---
 
-## 5. Model
+### 5. Model
 
 #### The below-mentioned benchmark model and their results will be useful to compare the solution I have defined.
 
@@ -90,7 +90,7 @@ Another benchmark I wanted to compare the validation results with is TextBlob. T
 
 ---
 
-## 6. Evaluations
+### 6. Evaluations
 
 #### The functional representations for how the solution can be measured will be the two evaluation metrics stated below.
 
@@ -98,7 +98,7 @@ I will be splitting the dataset into training, validation and testing set. The m
 
 ---
 
-## 7. Overview
+### 7. Overview
 
 #### These are the steps of project design I will be following for developing the solution and obtaining results.
 
@@ -113,7 +113,7 @@ I will be splitting the dataset into training, validation and testing set. The m
 
 ---
 
-## 8. Conclusion
+### 8. Conclusion
 
 #### The conclusion of the project and the results are the following.
 
@@ -121,32 +121,30 @@ I am successfully able to create a sentiment classifier using a labeled twitter 
 
 ---
 
-## 9. References
+### 9. References
 
 #### Following are the references that helped me make this project a success.
 
 [1] - [Steven Bird, Ewan Klein, and Edward Loper. Natural language processing with Python. "O'Reilly Media, Inc.", 2009.](http://www.datascienceassn.org/sites/default/files/Natural%20Language%20Processing%20with%20Python.pdf)
 
-[2] - [A Survey on Sentiment Analysis Algorithms for Opinion Mining](https://www.ijcaonline.org/research/volume133/number9/pradhan-2016-ijca-907977.pdf)
+[2] - [Mullen Sentiment Course Slides](https://lct-master.org/files/MullenSentimentCourseSlides.pdf)
 
-[3] - [Mullen Sentiment Course Slides](https://lct-master.org/files/MullenSentimentCourseSlides.pdf)
-
-[4] - [Stanford Sentiment Slides](https://web.stanford.edu/class/cs124/lec/sentiment.pdf)
+[3] - [Stanford Sentiment Slides](https://web.stanford.edu/class/cs124/lec/sentiment.pdf)
  
-[5] - [Sentiment Analysis and Opinion Mining](https://www.cs.uic.edu/~liub/FBS/SentimentAnalysis-and-OpinionMining.pdf)
+[4] - [Sentiment Analysis and Opinion Mining](https://www.cs.uic.edu/~liub/FBS/SentimentAnalysis-and-OpinionMining.pdf)
   
-[6] - [Sentiment Analysis Methodology of Twitter Data ](https://ijoer.com/Paper-January-2016/IJOER-JAN-2016-22.pdf)
+[5] - [Sentiment Analysis Methodology of Twitter Data ](https://ijoer.com/Paper-January-2016/IJOER-JAN-2016-22.pdf)
    
-[7] - [Pak, Alexander, and Patrick Paroubek. "Twitter as a Corpus for Sentiment Analysis and Opinion Mining." Vol. 10. 2010.](https://pdfs.semanticscholar.org/6b7f/c158541d5a7be2b2465f7d8a42afa97d7ae9.pdf?_ga=2.192887850.1696297172.1543890274-846566920.1543890274)
+[6] - [Pak, Alexander, and Patrick Paroubek. "Twitter as a Corpus for Sentiment Analysis and Opinion Mining." Vol. 10. 2010.](https://pdfs.semanticscholar.org/6b7f/c158541d5a7be2b2465f7d8a42afa97d7ae9.pdf?_ga=2.192887850.1696297172.1543890274-846566920.1543890274)
 
-[8] - [Build a Sentiment Analysis Tool for Twitter with this Simple Python Script - AYLIEN](http://blog.aylien.com/build-a-sentiment-analysis-tool-for-twitter-with-this-simple-python-script/)
+[7] - [Build a Sentiment Analysis Tool for Twitter with this Simple Python Script - AYLIEN](http://blog.aylien.com/build-a-sentiment-analysis-tool-for-twitter-with-this-simple-python-script/)
   
-[9] - [Text Classification & Sentiment Analysis tutorial / blog - Data Science Central](https://www.datasciencecentral.com/profiles/blogs/text-classification-sentiment-analysis-tutorial-blog)
+[8] - [Text Classification & Sentiment Analysis tutorial / blog - Data Science Central](https://www.datasciencecentral.com/profiles/blogs/text-classification-sentiment-analysis-tutorial-blog)
    
-[10] - [Sentiment Analysis on News Articles using Python for traders](https://www.quantinsti.com/blog/sentiment-analysis-news-python)
+[9] - [Sentiment Analysis on News Articles using Python for traders](https://www.quantinsti.com/blog/sentiment-analysis-news-python)
 
-[11] - [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140)
+[10] - [Sentiment140 dataset with 1.6 million tweets](https://www.kaggle.com/kazanova/sentiment140)
 
-[12] - [Sentiment Analysis Wikipedia](https://en.wikipedia.org/wiki/Sentiment_analysis)
+[11] - [Sentiment Analysis Wikipedia](https://en.wikipedia.org/wiki/Sentiment_analysis)
 
 ---

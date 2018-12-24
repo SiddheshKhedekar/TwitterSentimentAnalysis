@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Machine Learning Nanodegree Capstone Project</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>project</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11813,8 +11813,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing pandas, numpy for loading the datasets</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># importing matplotlib for graphical visualization the datasets</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;fivethirtyeight&#39;</span><span class="p">)</span>
 
@@ -11850,8 +11852,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[125]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./trainingandtestdata/training_data.csv&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;cp1252&quot;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># reading only the text and sentiment columns of the entire dataset into variable df using the read_csv function under the pandas library</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./trainingandtestdata/training_data.csv&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;cp1252&quot;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">,</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="c1"># mapping the values of the texts sentiment</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
 </pre></div>
 
@@ -11882,39 +11886,54 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[126]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing re for regular expression handling</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="c1"># importing beautifulsoup for bom and html handling</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="c1"># importing wordpuncttokenizer for whitespace formatting</span>
 <span class="kn">from</span> <span class="nn">nltk.tokenize</span> <span class="k">import</span> <span class="n">WordPunctTokenizer</span>
+<span class="c1"># importing warnings to suppress irrelavent jupyter notebook warnings</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="c1"># ignoring user warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">)</span>
 
+<span class="c1"># some regular expression definitions declared and initialized to variables to clean up the data</span>
 <span class="n">tok</span> <span class="o">=</span> <span class="n">WordPunctTokenizer</span><span class="p">()</span>
+<span class="c1"># handling twitter mentions</span>
 <span class="n">pat1</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;@[A-Za-z0-9_]+&#39;</span>
+<span class="c1"># handling websites 1</span>
 <span class="n">pat2</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;https?://[^ ]+&#39;</span>
 <span class="n">combined_pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">pat1</span><span class="p">,</span> <span class="n">pat2</span><span class="p">))</span>
+<span class="c1"># handling websites 2</span>
 <span class="n">www_pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;www.[^ ]+&#39;</span>
+<span class="c1"># word map for contractions to be freplaced by their fuller forms</span>
 <span class="n">negations_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;isn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;is not&quot;</span><span class="p">,</span> <span class="s2">&quot;aren&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;are not&quot;</span><span class="p">,</span> <span class="s2">&quot;wasn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;was not&quot;</span><span class="p">,</span> <span class="s2">&quot;weren&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;were not&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;haven&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;have not&quot;</span><span class="p">,</span><span class="s2">&quot;hasn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;has not&quot;</span><span class="p">,</span><span class="s2">&quot;hadn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;had not&quot;</span><span class="p">,</span><span class="s2">&quot;won&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;will not&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;wouldn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;would not&quot;</span><span class="p">,</span> <span class="s2">&quot;don&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;do not&quot;</span><span class="p">,</span> <span class="s2">&quot;doesn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;does not&quot;</span><span class="p">,</span><span class="s2">&quot;didn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;did not&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;can&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;can not&quot;</span><span class="p">,</span><span class="s2">&quot;couldn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;could not&quot;</span><span class="p">,</span><span class="s2">&quot;shouldn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;should not&quot;</span><span class="p">,</span><span class="s2">&quot;mightn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;might not&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;mustn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;must not&quot;</span><span class="p">}</span>
+                <span class="s2">&quot;mustn&#39;t&quot;</span><span class="p">:</span><span class="s2">&quot;must not&quot;</span><span class="p">}</span> 
 <span class="n">neg_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b(&#39;</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">negations_dic</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;)\b&#39;</span><span class="p">)</span>
 
+<span class="c1"># the tweet_cleaner function definition that iterates through the data and cleans the texts</span>
 <span class="k">def</span> <span class="nf">tweet_cleaner</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="c1"># parsing the tweets</span>
     <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
     <span class="n">souped</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">bom_removed</span> <span class="o">=</span> <span class="n">souped</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\ufffd</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span>
+        <span class="c1"># removing bom</span>
+        <span class="n">bom_removed</span> <span class="o">=</span> <span class="n">souped</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8-sig&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;</span><span class="se">\ufffd</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">)</span> 
     <span class="k">except</span><span class="p">:</span>
         <span class="n">bom_removed</span> <span class="o">=</span> <span class="n">souped</span>
     <span class="n">stripped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">combined_pat</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">bom_removed</span><span class="p">)</span>
     <span class="n">stripped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">www_pat</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">stripped</span><span class="p">)</span>
-    <span class="n">lower_case</span> <span class="o">=</span> <span class="n">stripped</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># converting to lowercase for normalization</span>
+    <span class="n">lower_case</span> <span class="o">=</span> <span class="n">stripped</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> 
+    <span class="c1"># lambda function for contractions removal</span>
     <span class="n">neg_handled</span> <span class="o">=</span> <span class="n">neg_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">negations_dic</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">()],</span> <span class="n">lower_case</span><span class="p">)</span>
     <span class="n">letters_only</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^a-zA-Z]&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">neg_handled</span><span class="p">)</span>
-    <span class="c1"># During the letters_only process two lines above, it has created unnecessay white spaces,</span>
-    <span class="c1"># I will tokenize and join together to remove unneccessary white spaces</span>
+    <span class="c1"># during the letters_only process two lines above, it has created unnecessay white spaces,</span>
     <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span>  <span class="ow">in</span> <span class="n">tok</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">letters_only</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># tokenizing and joining together to remove unneccessary white spaces</span>
     <span class="k">return</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 </pre></div>
 
@@ -11931,10 +11950,14 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
 
 print (&quot;Cleaning the tweets...\n&quot;)
+# initializing an empty list to hold all of the tweets
 clean_tweet_texts = []
+# iterate till end of tweets
 for i in range(0,len(df)):
     if( (i+1)%100000 == 0 ):
+        # keeping track of the work being done
         print (&quot;Tweets %d of %d has been processed&quot; % ( i+1, len(df) ))
+    # appending the processed tweets to the list
     clean_tweet_texts.append(tweet_cleaner(df[&#39;text&#39;][i]))
 </pre></div>
 
@@ -11995,15 +12018,24 @@ Wall time: 5min 5s
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">clean_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">clean_tweet_texts</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># initializing a new pandas dataframe variable to store the cleant tweets </span>
+<span class="n">clean_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">clean_tweet_texts</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="c1"># saving the sentiment of the tweets as they are as the target </span>
 <span class="n">clean_df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sentiment</span>
+<span class="c1"># exporting the contents of clean_df variable to a csv file</span>
 <span class="n">clean_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./trainingandtestdata/clean_tweet.csv&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
+<span class="c1"># ignoring future warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+<span class="c1"># saving path of clean_tweet.csv into a variable</span>
 <span class="n">csv</span> <span class="o">=</span> <span class="s1">&#39;./trainingandtestdata/clean_tweet.csv&#39;</span>
+<span class="c1"># importing the contents of clean_tweet.csv into a new variable</span>
 <span class="n">my_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># ignoring the entries that have null values after data cleaning</span>
 <span class="n">my_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># resetting the index</span>
 <span class="n">my_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># displaying the info of the pandas dataframe variable</span>
 <span class="n">my_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 
@@ -12051,20 +12083,24 @@ memory usage: 24.4+ MB
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">wordcloud</span> <span class="k">import</span> <span class="n">WordCloud</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing wordcloud for visualization</span>
+<span class="kn">from</span> <span class="nn">wordcloud</span> <span class="k">import</span> <span class="n">WordCloud</span>
 
+<span class="c1"># preparing negative tweets for representation</span>
 <span class="n">neg_tweets</span> <span class="o">=</span> <span class="n">my_df</span><span class="p">[</span><span class="n">my_df</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">neg_string</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">neg_tweets</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
     <span class="n">neg_string</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="n">neg_string</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">neg_string</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 
+<span class="c1"># preparing positive tweets for representation</span>
 <span class="n">pos_tweets</span> <span class="o">=</span> <span class="n">my_df</span><span class="p">[</span><span class="n">my_df</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">pos_string</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">pos_tweets</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
     <span class="n">pos_string</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="n">pos_string</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pos_string</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
 
+<span class="c1"># plotting the negative cloud of words</span>
 <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span><span class="n">max_font_size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">neg_string</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
@@ -12106,7 +12142,8 @@ height=406
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span><span class="n">max_font_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;magma&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">pos_string</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># plotting the positive cloud of words</span>
+<span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1600</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span><span class="n">max_font_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;magma&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">pos_string</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
@@ -12158,7 +12195,8 @@ height=406
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing countvectorizer for getting frequency of the words</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
 
 <span class="n">cvec</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
 <span class="n">cvec</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">my_df</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -12199,7 +12237,8 @@ height=406
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">neg_doc_matrix</span> <span class="o">=</span> <span class="n">cvec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">my_df</span><span class="p">[</span><span class="n">my_df</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># processing the negative and positive doc matrix to get the sum of their frequencies and save it in a separate pandas dataframe variable</span>
+<span class="n">neg_doc_matrix</span> <span class="o">=</span> <span class="n">cvec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">my_df</span><span class="p">[</span><span class="n">my_df</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 <span class="n">pos_doc_matrix</span> <span class="o">=</span> <span class="n">cvec</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">my_df</span><span class="p">[</span><span class="n">my_df</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 <span class="n">neg_tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">neg_doc_matrix</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">pos_tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pos_doc_matrix</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -12207,6 +12246,7 @@ height=406
 <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pos_tf</span><span class="p">))</span>
 <span class="n">term_freq_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">neg</span><span class="p">,</span><span class="n">pos</span><span class="p">],</span><span class="n">columns</span><span class="o">=</span><span class="n">cvec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 
+<span class="c1"># printing the word frequency of negative, positive and their total sum </span>
 <span class="n">term_freq_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="s1">&#39;positive&#39;</span><span class="p">]</span>
 <span class="n">term_freq_df</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">term_freq_df</span><span class="p">[</span><span class="s1">&#39;negative&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">term_freq_df</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">]</span>
 <span class="n">term_freq_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
@@ -12341,11 +12381,14 @@ $$\alpha \approx {1}$$</p>
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">term_freq_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./trainingandtestdata/term_freq_df.csv&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># saving the frequency dataframe to a csv file</span>
+<span class="n">term_freq_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;./trainingandtestdata/term_freq_df.csv&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
+<span class="c1"># making preparations for plotting graphs</span>
 <span class="n">y_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># plotting a graph of the total frequencies of the words</span>
 <span class="n">expected_zipf</span> <span class="o">=</span> <span class="p">[</span><span class="n">term_freq_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="n">s</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_pos</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">term_freq_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;total&#39;</span><span class="p">][:</span><span class="mi">500</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">expected_zipf</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -12409,9 +12452,12 @@ height=479
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing pylab for calculations</span>
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="k">import</span> <span class="o">*</span>
+<span class="c1"># ignoring unicode warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">UnicodeWarning</span><span class="p">)</span>
 
+<span class="c1"># making preparations for plotting the log log graph</span>
 <span class="n">counts</span> <span class="o">=</span> <span class="n">term_freq_df</span><span class="o">.</span><span class="n">total</span>
 <span class="n">tokens</span> <span class="o">=</span> <span class="n">term_freq_df</span><span class="o">.</span><span class="n">index</span>
 <span class="n">ranks</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -12481,15 +12527,19 @@ height=388
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span>  <span class="k">import</span> <span class="n">train_test_split</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing traintestsplit for data partitioning </span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span>  <span class="k">import</span> <span class="n">train_test_split</span>
 
+<span class="c1"># separating the text and target of the mydf dataframe</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">my_df</span><span class="o">.</span><span class="n">text</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">my_df</span><span class="o">.</span><span class="n">target</span>
 
+<span class="c1"># randomizing the data</span>
 <span class="n">SEED</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">x_train</span><span class="p">,</span> <span class="n">x_validation_and_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_validation_and_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">02</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 <span class="n">x_validation</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_validation</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x_validation_and_test</span><span class="p">,</span> <span class="n">y_validation_and_test</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
 
+<span class="c1"># separating the portion of data in order to reduce </span>
 <span class="n">x_train</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">16000</span><span class="p">)</span>
 <span class="n">x_validation</span> <span class="o">=</span> <span class="n">x_validation</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
 <span class="n">x_test</span> <span class="o">=</span> <span class="n">x_test</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
@@ -12497,6 +12547,7 @@ height=388
 <span class="n">y_validation</span> <span class="o">=</span> <span class="n">y_validation</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
 <span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
 
+<span class="c1"># spliting the data into train validation and test set</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Train set has total </span><span class="si">{0}</span><span class="s2"> entries with </span><span class="si">{1:.2f}</span><span class="s2">% negative, </span><span class="si">{2:.2f}</span><span class="s2">% positive&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">),</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">[</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span><span class="o">*</span><span class="mf">1.</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
     <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">[</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span><span class="o">*</span><span class="mf">1.</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
@@ -12550,10 +12601,13 @@ Test set has total 2000 entries with 49.55% negative, 50.45% positive
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
+# importing the textblob library for using it as benchmark
 from textblob import TextBlob
+# importing some sklearn metrices for measuring accuracy of the model
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
 
+# initializing textblob 
 tbresult = [TextBlob(i).sentiment.polarity for i in x_validation]
 tbpred = [0 if n &lt; 0 else 1 for n in tbresult]
 </pre></div>
@@ -12586,10 +12640,12 @@ tbpred = [0 if n &lt; 0 else 1 for n in tbresult]
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">conmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_validation</span><span class="p">,</span> <span class="n">tbpred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calculating the confusion matrix</span>
+<span class="n">conmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_validation</span><span class="p">,</span> <span class="n">tbpred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
 <span class="n">confusion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">conmat</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="s1">&#39;negative&#39;</span><span class="p">],</span>
                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;predicted_positive&#39;</span><span class="p">,</span><span class="s1">&#39;predicted_negative&#39;</span><span class="p">])</span>
+
+<span class="c1"># plotting the confusion matrix and printing a neat classification report</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Accuracy Score: </span><span class="si">{0:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_validation</span><span class="p">,</span> <span class="n">tbpred</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Confusion Matrix</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -12684,16 +12740,29 @@ Below is a representation of confusion matrix.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing tqdm and gensim for word2vec and doc2vec feature extraction</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 <span class="n">tqdm</span><span class="o">.</span><span class="n">pandas</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="s2">&quot;progress-bar&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">gensim</span>
 <span class="kn">from</span> <span class="nn">gensim.models.word2vec</span> <span class="k">import</span> <span class="n">Word2Vec</span>
 <span class="kn">from</span> <span class="nn">gensim.models.doc2vec</span> <span class="k">import</span> <span class="n">TaggedDocument</span>
 <span class="kn">import</span> <span class="nn">multiprocessing</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">utils</span>
+
+<span class="c1"># function definition to prepare tweets for word2vec feature extraction</span>
+<span class="k">def</span> <span class="nf">labelize_tweets_ug</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span><span class="n">label</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">label</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tweets</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">tweets</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TaggedDocument</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># preparation of tweets </span>
+<span class="n">all_x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">x_train</span><span class="p">,</span><span class="n">x_validation</span><span class="p">,</span><span class="n">x_test</span><span class="p">])</span>
+<span class="n">all_x_w2v</span> <span class="o">=</span> <span class="n">labelize_tweets_ug</span><span class="p">(</span><span class="n">all_x</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12714,32 +12783,6 @@ Below is a representation of confusion matrix.</p>
 <li>DBOW + DMM</li>
 </ol>
 <p>With above vectors, I fitted the model and evaluate the result on the validation set. I compared different combinations and input only the best combination to my model.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">labelize_tweets_ug</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span><span class="n">label</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">prefix</span> <span class="o">=</span> <span class="n">label</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tweets</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">tweets</span><span class="p">):</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TaggedDocument</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">result</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Step-5.2:-Preparation-for-Convolutional-Neural-Network">Step 5.2: Preparation for Convolutional Neural Network<a class="anchor-link" href="#Step-5.2:-Preparation-for-Convolutional-Neural-Network">&#182;</a></h3><p>In order to feed to a CNN, I have to not only feed each word vector to the model, but also in a sequence which matches the original tweet.</p>
 <p>For example, let's say I have a sentence as below.</p>
 <p>"I love cats"</p>
@@ -12761,44 +12804,11 @@ cats: [0.4, 1.3]</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">x_train</span><span class="p">,</span><span class="n">x_validation</span><span class="p">,</span><span class="n">x_test</span><span class="p">])</span>
-<span class="n">all_x_w2v</span> <span class="o">=</span> <span class="n">labelize_tweets_ug</span><span class="p">(</span><span class="n">all_x</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Step-5.3:-Creating-a-Convolutional-Neural-Network">Step 5.3: Creating a Convolutional Neural Network<a class="anchor-link" href="#Step-5.3:-Creating-a-Convolutional-Neural-Network">&#182;</a></h3><p>Let's say I have a sentence as follows:</p>
-<p>"I love cats and dogs"</p>
-<p>With word vectors (let's assume I have 200-dimensional word vectors for each word), the above sentence can be represented in 5X200 matrix, one row for each word. I remember I added zeros to pad a sentence in the above where I prepared the data to feed to an embedding layer? If our decided word length is 45, then the above sentence will have 45X200 matrix, but with all zeros in the first 40 rows. Keeping this in mind, let's take a look at how CNN works on image data.</p>
-<p><img src="./img/stride1.gif" alt="title"></p>
-<p>In the above GIF, I have one filter (kernel matrix) of 3X3 dimension, convolving over the data (image matrix) and calculate the sum of element-wise multiplication result, and record the result on a feature map (output matrix). If I imagine each row of the data is for a word in a sentence, then it would not be learning efficiently since the filter is only looking at a part of a word vector at a time. The above CNN is so-called 2D Convolutional Neural Network since the filter is moving in 2-dimensional space.</p>
-<p>What I do with text data represented in word vectors is making use of 1D Convolutional Neural Network. If a filter's column width is as same as the data column width, then it has no room to stride horizontally, and only stride vertically. For example, if our sentence is represented in 45X200 matrix, then a filter column width will also have 200 columns, and the length of row (height) will be similar to the concept of n-gram. If the filter height is 2, the filter will stride through the document computing the calculation above with all the bigrams, if the filter height is 3, it will go through all the trigrams in the document, and so on.</p>
-<p>If a 2X200 filter is applied with stride size of 1 to 45X200 matrix, I will get 44X1 dimensional output. In the case of 1D Convolution, the output width will be just 1 in this case(number of filter=1). The output height can be easily calculated with below formula (assuming that your data is already padded).</p>
-<p>$${Output Height} = \frac {H - F_h}{S} + 1$$</p>
-<p>where</p>
-<p>H: input data height</p>
-<p>Fh: filter height</p>
-<p>S: stride size</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cores</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># preparing data for word2vec unigram continuous bag of words feature extraction</span>
+<span class="n">cores</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 <span class="n">model_ug_cbow</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">sg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="n">cores</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">,</span> <span class="n">min_alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">)</span>
 <span class="n">model_ug_cbow</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">words</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">all_x_w2v</span><span class="p">)])</span>
 </pre></div>
@@ -12833,6 +12843,7 @@ cats: [0.4, 1.3]</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
 for epoch in range(30):
+    # training and extracting word2vec unigram continuous bag of words features
     model_ug_cbow.train(utils.shuffle([x.words for x in tqdm(all_x_w2v)]), total_examples=len(all_x_w2v), epochs=1)
     model_ug_cbow.alpha -= 0.002
     model_ug_cbow.min_alpha = model_ug_cbow.alpha
@@ -12906,7 +12917,8 @@ for epoch in range(30):
 <div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_ug_sg</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="n">cores</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">,</span> <span class="n">min_alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># preparing data for word2vec unigram skipgram feature extraction</span>
+<span class="n">model_ug_sg</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_count</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="n">cores</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">,</span> <span class="n">min_alpha</span><span class="o">=</span><span class="mf">0.065</span><span class="p">)</span>
 <span class="n">model_ug_sg</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">words</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">all_x_w2v</span><span class="p">)])</span>
 </pre></div>
 
@@ -12940,6 +12952,7 @@ for epoch in range(30):
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">time</span>
 for epoch in range(30):
+    # training and extracting word2vec unigram skipgram features
     model_ug_sg.train(utils.shuffle([x.words for x in tqdm(all_x_w2v)]), total_examples=len(all_x_w2v), epochs=1)
     model_ug_sg.alpha -= 0.002
     model_ug_sg.min_alpha = model_ug_sg.alpha
@@ -13012,6 +13025,18 @@ for epoch in range(30):
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Step-5.3:-Creating-a-Convolutional-Neural-Network">Step 5.3: Creating a Convolutional Neural Network<a class="anchor-link" href="#Step-5.3:-Creating-a-Convolutional-Neural-Network">&#182;</a></h3><p>Let's say I have a sentence as follows:</p>
+<p>"I love cats and dogs"</p>
+<p>With word vectors (let's assume I have 200-dimensional word vectors for each word), the above sentence can be represented in 5X200 matrix, one row for each word. I remember I added zeros to pad a sentence in the above where I prepared the data to feed to an embedding layer? If our decided word length is 45, then the above sentence will have 45X200 matrix, but with all zeros in the first 40 rows. Keeping this in mind, let's take a look at how CNN works on image data.</p>
+<p><img src="./img/stride1.gif" alt="title"></p>
+<p>In the above GIF, I have one filter (kernel matrix) of 3X3 dimension, convolving over the data (image matrix) and calculate the sum of element-wise multiplication result, and record the result on a feature map (output matrix). If I imagine each row of the data is for a word in a sentence, then it would not be learning efficiently since the filter is only looking at a part of a word vector at a time. The above CNN is so-called 2D Convolutional Neural Network since the filter is moving in 2-dimensional space.</p>
+<p>What I do with text data represented in word vectors is making use of 1D Convolutional Neural Network. If a filter's column width is as same as the data column width, then it has no room to stride horizontally, and only stride vertically. For example, if our sentence is represented in 45X200 matrix, then a filter column width will also have 200 columns, and the length of row (height) will be similar to the concept of n-gram. If the filter height is 2, the filter will stride through the document computing the calculation above with all the bigrams, if the filter height is 3, it will go through all the trigrams in the document, and so on.</p>
+<p>If a 2X200 filter is applied with stride size of 1 to 45X200 matrix, I will get 44X1 dimensional output. In the case of 1D Convolution, the output width will be just 1 in this case(number of filter=1). The output height can be easily calculated with below formula (assuming that your data is already padded).</p>
+<p>$${Output Height} = \frac {H - F_h}{S} + 1$$</p>
+<p>where</p>
+<p>H: input data height</p>
+<p>Fh: filter height</p>
+<p>S: stride size</p>
 <p>Let's first load the Word2Vec models to extract word vectors from. I have saved the Word2Vec models I trained in the previous post, and can easily be loaded with "KeyedVectors" function in Gensim. I have two different Word2Vec models, one with CBOW (Continuous Bag Of Words) model, and the other with a skip-gram model. I won't go into detail about how CBOW and skip-gram differs, but you can refer to my previous post if you want to know a bit more in detail.</p>
 <p>I am constructing a sort of dictionary I can extract the word vectors from. Since I have two different Word2Vec models, below "embedding_index" will have concatenated vectors of the two models. For each model, I have 100 dimension vector representation of the words, and by concatenating each word will have 200 dimension vector representation.</p>
 <p>Now I have our reference to word vectors ready, but I still haven't prepared data to be in the format I have explained at the start of the post. Keras' 'Tokenizer' will split each word in a sentence,  then I can call 'texts_to_sequences' method to get the sequential representation of each sentence. I also need to pass 'num_words' which is a number of vocabularies you want to use, and this will be applied when you call 'texts_to_sequences' method. This might be a bit counter-intuitive since if you check the length of all the word index, it will not be the number of words you defined, but the actual screening process happens when you call 'texts_to_sequences' method.</p>
@@ -13031,69 +13056,18 @@ for epoch in range(30):
 <div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_ug_cbow</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;./model/w2v_model_ug_cbow.word2vec&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># saving the extracted features</span>
+<span class="n">model_ug_cbow</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;./model/w2v_model_ug_cbow.word2vec&#39;</span><span class="p">)</span>
 <span class="n">model_ug_sg</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;./model/w2v_model_ug_sg.word2vec&#39;</span><span class="p">)</span>
-</pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">gensim.models</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="c1"># importing keyedvectors for using its load function</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="c1"># loading the extracted features</span>
 <span class="n">model_ug_cbow</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;./model/w2v_model_ug_cbow.word2vec&#39;</span><span class="p">)</span>
 <span class="n">model_ug_sg</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;./model/w2v_model_ug_sg.word2vec&#39;</span><span class="p">)</span>
-</pre></div>
 
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">model_ug_cbow</span><span class="o">.</span><span class="n">wv</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[44]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>8265</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="k">import</span> <span class="n">Tokenizer</span>
+<span class="c1"># importing tokenizer and padsequences from keras</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="k">import</span> <span class="n">Tokenizer</span>
 <span class="kn">from</span> <span class="nn">keras.preprocessing.sequence</span> <span class="k">import</span> <span class="n">pad_sequences</span>
 
 <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">num_words</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
@@ -13108,43 +13082,11 @@ for epoch in range(30):
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[47]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>17332</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># displaying a small subset of the training set</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
     <span class="nb">print</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 
@@ -13180,7 +13122,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># displaying the tokens of the same small subset of the training set</span>
+<span class="n">sequences</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13217,7 +13160,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="p">[]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calculating the length of every input in the training set and storing it in a list</span>
+<span class="n">length</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_train</span><span class="p">:</span>
     <span class="n">length</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
 </pre></div>
@@ -13232,7 +13176,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[52]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">max</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># getting the max length the input set</span>
+<span class="nb">max</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -13265,7 +13210,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[53]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_train_seq</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># padding the training set soo that they have uniformity while feeding them to the model</span>
+<span class="n">x_train_seq</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Shape of data tensor:&#39;</span><span class="p">,</span> <span class="n">x_train_seq</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 
@@ -13297,7 +13243,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x_train_seq</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># displaying the tokens of the same small subset of the training set after padding</span>
+<span class="n">x_train_seq</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -13354,7 +13301,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sequences_val</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">x_validation</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># padding the validation set soo that they have uniformity while feeding them to the model</span>
+<span class="n">sequences_val</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">x_validation</span><span class="p">)</span>
 <span class="n">x_val_seq</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences_val</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
 </pre></div>
 
@@ -13368,7 +13316,8 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[56]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_words</span> <span class="o">=</span> <span class="mi">100000</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># generating an embedding matrix of vectors to train the model</span>
+<span class="n">num_words</span> <span class="o">=</span> <span class="mi">100000</span>
 <span class="n">embedding_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_words</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">num_words</span><span class="p">:</span>
@@ -13385,44 +13334,14 @@ your tweet reminded me that game was the shit
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">embedding_matrix</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="p">,</span><span class="n">embeddings_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;you&#39;</span><span class="p">))</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[57]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>False</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Model</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing the keras libraries needed to create my model</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">Model</span>
+<span class="c1"># importing modelcheckpoint for saving best weights</span>
 <span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="k">import</span> <span class="n">ModelCheckpoint</span>
+<span class="c1"># importing keras modules needed to add layers to my model</span>
 <span class="kn">from</span> <span class="nn">keras.layers.embeddings</span> <span class="k">import</span> <span class="n">Embedding</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">Activation</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">GlobalMaxPooling1D</span>
 </pre></div>
@@ -13450,8 +13369,10 @@ your tweet reminded me that game was the shit
 <div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tweet_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">45</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># the input layer of the model</span>
+<span class="n">tweet_input</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">45</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">)</span>
 
+<span class="c1"># the embedding of the features along with adding convo and globalmaxpooling layers to the model</span>
 <span class="n">tweet_encoder</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="n">embedding_matrix</span><span class="p">],</span> <span class="n">input_length</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">tweet_input</span><span class="p">)</span>
 <span class="n">bigram_branch</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">tweet_encoder</span><span class="p">)</span>
 <span class="n">bigram_branch</span> <span class="o">=</span> <span class="n">GlobalMaxPooling1D</span><span class="p">()(</span><span class="n">bigram_branch</span><span class="p">)</span>
@@ -13460,15 +13381,16 @@ your tweet reminded me that game was the shit
 <span class="n">fourgram_branch</span> <span class="o">=</span> <span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">tweet_encoder</span><span class="p">)</span>
 <span class="n">fourgram_branch</span> <span class="o">=</span> <span class="n">GlobalMaxPooling1D</span><span class="p">()(</span><span class="n">fourgram_branch</span><span class="p">)</span>
 
+<span class="c1"># the concatenation of bi, tri and fourgram along with adding dense, dropout and activation layers to the model</span>
 <span class="n">merged</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">bigram_branch</span><span class="p">,</span> <span class="n">trigram_branch</span><span class="p">,</span> <span class="n">fourgram_branch</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">merged</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">merged</span><span class="p">)</span>
 <span class="n">merged</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)(</span><span class="n">merged</span><span class="p">)</span>
 <span class="n">merged</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">merged</span><span class="p">)</span>
 <span class="n">output</span> <span class="o">=</span> <span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">)(</span><span class="n">merged</span><span class="p">)</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">tweet_input</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">output</span><span class="p">])</span>
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
-                  <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="c1"># compiling the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="c1"># summerizing the model</span>
 <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 </pre></div>
 
@@ -13544,9 +13466,11 @@ ________________________________________________________________________________
 <div class="prompt input_prompt">In&nbsp;[61]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;./model/CNN_best_weights.</span><span class="si">{epoch:02d}</span><span class="s2">-</span><span class="si">{val_acc:.4f}</span><span class="s2">.hdf5&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># filepath for saving the model checkpoints only on improvement</span>
+<span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;./model/CNN_best_weights.</span><span class="si">{epoch:02d}</span><span class="s2">-</span><span class="si">{val_acc:.4f}</span><span class="s2">.hdf5&quot;</span>
 <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_acc&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
 
+<span class="c1"># training the model and saving the checkpoints</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train_seq</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
                      <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_val_seq</span><span class="p">,</span> <span class="n">y_validation</span><span class="p">),</span> <span class="n">callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="n">checkpoint</span><span class="p">])</span>
 </pre></div>
@@ -13621,9 +13545,12 @@ Epoch 00005: val_acc did not improve from 0.77400
 <div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing the loadmodel from kerasmodels</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">load_model</span>
 
+<span class="c1"># loading the best weights of trained model</span>
 <span class="n">loaded_CNN_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;./model/CNN_best_weights.02-0.7740.hdf5&#39;</span><span class="p">)</span>
+<span class="c1"># evaluating the validation set using the loaded weights</span>
 <span class="n">loaded_CNN_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_val_seq</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_validation</span><span class="p">)</span>
 </pre></div>
 
@@ -13680,8 +13607,11 @@ Epoch 00005: val_acc did not improve from 0.77400
 <div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sequences_test</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># padding the test set soo that they have uniformity while feeding them to the model</span>
+<span class="n">sequences_test</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
 <span class="n">x_test_seq</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences_test</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+
+<span class="c1"># evaluating the test set using the loaded weights</span>
 <span class="n">loaded_CNN_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_test_seq</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
 </pre></div>
 
@@ -13726,12 +13656,15 @@ Epoch 00005: val_acc did not improve from 0.77400
 <div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># importing roccurve and auc from sklearn metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
 
+<span class="c1"># preprocessing test data before plotting </span>
 <span class="n">yhat_cnn</span> <span class="o">=</span> <span class="n">loaded_CNN_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test_seq</span><span class="p">)</span>
-
 <span class="n">fpr_cnn</span><span class="p">,</span> <span class="n">tpr_cnn</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">yhat_cnn</span><span class="p">)</span>
 <span class="n">roc_auc_nn</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr_cnn</span><span class="p">,</span> <span class="n">tpr_cnn</span><span class="p">)</span>
+
+<span class="c1"># plotting the graph of roc and calculating aoc</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr_cnn</span><span class="p">,</span> <span class="n">tpr_cnn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;w2v-CNN (area = </span><span class="si">%0.3f</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">roc_auc_nn</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
